@@ -2,20 +2,29 @@
 
 namespace App\Livewire;
 
-use App\Models\Category;
 use App\Models\Thread;
 use Livewire\Component;
 
 class ShowThread extends Component
 {
+    public Thread $thread;
+    public $body = '';
+
+    public function postReply()
+    {
+        // Validate
+        $this->validate(['body' => 'required']);
+        // Create
+        auth()->user()->replies()->create([
+            'thread_id' => $this->thread->id,
+            'body' => $this->body,
+        ]);
+        // Refresh
+        $this->body = ''; 
+    }
+
     public function render()
     {
-        $categories = Category::get();
-        $threads = Thread::latest()->get();
-
-        return view('livewire.show-thread', [
-            'categories' => $categories,
-            'threads' => $threads,
-        ]);
+        return view('livewire.show-thread');
     }
 }
