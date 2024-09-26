@@ -25,7 +25,11 @@
         </div>
     </div>
 
-    {{-- Respuestas --}}
+    @foreach ($replies as $reply)
+        @livewire('show-reply', ['reply' => $reply], key('reply-'.$reply->id))
+    @endforeach
+
+
     <form wire:submit.prevent="postReply">
         <input type="text" placeholder="Escribe una respuesta"
             class="bg-slate-800 border-0 rounded-md w-full p-3 text-white/60 text-xs" 
@@ -33,5 +37,4 @@
         >
     </form>
 
-    {{-- Formulario --}}
 </div>
