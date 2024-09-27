@@ -5,9 +5,12 @@ namespace App\Livewire;
 use App\Models\Reply;
 use App\Models\Thread;
 use Livewire\Component;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ShowReply extends Component
 {
+    use AuthorizesRequests;
+
     public Reply $reply;
     public $body = '';
 
@@ -22,12 +25,14 @@ class ShowReply extends Component
 
     public function updatedIsEditing()
     {
+        $this->authorize('update', $this->reply);
         $this->is_creating = false;
         $this->body = $this->reply->body;
     }
 
     public function updateReply()
     {
+        $this->authorize('update', $this->reply);
         // Validate
         $this->validate(['body' => 'required']);
         // Create
