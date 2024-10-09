@@ -18,13 +18,15 @@ class ShowThreads extends Component
         
         $threads = Thread::query();
         $threads->where('title', 'like', "%$this->search%");
-        $threads->withCount('replies');
-        $threads->latest();
+
 
         if($this->category) {
             $threads->where('category_id', $this->category);
         }
 
+        $threads->with('user', 'category');
+        $threads->withCount('replies');
+        $threads->latest();
 
         return view('livewire.show-threads', [
             'categories' => $categories,

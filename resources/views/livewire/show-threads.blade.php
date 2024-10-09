@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-10 py-12">
     <div class="w-64">
-        <a href=""
+        <a href="{{ route('threads.create') }}"
             class="block w-full py-4 mb-10 bg-gradient-to-r from-blue-600 to-blue-700 hover:to-blue-600 text-white/90 font-bold text-xs text-center rounded-md">
             Preguntar
         </a>
@@ -26,14 +26,10 @@
     </div>
     <div class="w-full">
         <form action="" class="mb-4">
-            <input 
-                type="text" 
-                placeholder="// ..." 
-                class="bg-slate-800 border-0 rounded-md w-1/3 p-3 text-white/60 text-xs"
-                wire:model.live="search"
-            >
+            <input type="text" placeholder="// ..."
+                class="bg-slate-800 border-0 rounded-md w-1/3 p-3 text-white/60 text-xs" wire:model.live="search">
         </form>
-        
+
 
         @foreach ($threads as $thread)
             <div class="rounded-md bg-gradient-to-r from-slate-800 to-slate-900 hover:to-slate-800 mb-4">
@@ -57,15 +53,19 @@
                                 <span class="text-white/90">{{ $thread->created_at->diffForHumans() }}</span>
                             </span>
                             <span class="flex items-center gap-1 text-slate-700">
-                                <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <svg class="h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
                                 </svg>
 
                                 {{ $thread->replies_count }}
                                 Respuesta{{ $thread->replies_count !== 1 ? 's' : '' }}
-                                <a href="{{ route('threads.edit', $thread ) }}" class="hover:text-white">Editar</a>
+
+                                @can('update', $thread)
+                                    <a href="{{ route('threads.edit', $thread) }}" class="hover:text-white">Editar</a>
+                                @endcan
+
                             </span>
                         </p>
                     </div>
